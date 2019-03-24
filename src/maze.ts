@@ -1,11 +1,15 @@
 class Maze {
     private p: p5;
-    private width: number;
-    private height: number;
+    public width: number;
+    public height: number;
     private density: number;
     private scale: number = 1;
 
     private map: number[][];
+    public originalMap: number[][];
+
+    public startingLocation: number[];
+    public goalLocation: number[];
 
     constructor(
         p: p5,
@@ -52,6 +56,9 @@ class Maze {
         }
         let goalLocation: number[] = [endX, endY];
 
+        this.startingLocation = startingLocation;
+        this.goalLocation = goalLocation;
+
         this.map[startingLocation[1]][startingLocation[0]] = 2;
         this.map[goalLocation[1]][goalLocation[0]] = 3;
 
@@ -65,14 +72,10 @@ class Maze {
         for (let i = 0; i < obstacleCount; i++) {
             let x = this.p.floor(this.p.random(this.width));
             let y = this.p.floor(this.p.random(this.height));
-            // let tmp = [x, y];
 
-            while(
-                this.map[y][x] !== 1
-            ) {
+            while(this.map[y][x] !== 1) {
                 x = this.p.floor(this.p.random(this.width));
                 y = this.p.floor(this.p.random(this.height));
-                // tmp = [x, y];
             }
 
             this.map[y][x] = 0;
@@ -83,10 +86,9 @@ class Maze {
             } else {
                 totalTile--;
             }
-
         }
 
-
+        this.originalMap = this.map;
     }
 
     getMap(): number[][] {
@@ -106,7 +108,7 @@ class Maze {
                         this.p.fill('#FFFCE8');
                         break;
                     case 2:
-                        this.p.fill('#DD403A');
+                        this.p.fill('#00FFFF');
                         break;
                     case 3:
                         this.p.fill('#B8B42D');
@@ -117,16 +119,28 @@ class Maze {
                     case 5:
                         this.p.fill('#63A088');
                         break;
+                    case 6:
+                        this.p.fill('#ff0033');
+                        break;
                 }
                 this.p.rect(
-                    i * 10 * this.scale,
                     j * 10 * this.scale,
+                    i * 10 * this.scale,
                     10 * this.scale,
                     10 * this.scale
                 );
                 this.p.pop();
             }
         }
+    }
+
+    resetMapState() {
+        this.map = this.originalMap;
+    }
+
+    setTileState(x: number, y: number, state: number) {
+        if (this.map[y][x] === 1 || this.map[y][x] === 5 || this.map[y][x] === 6)
+            this.map[y][x] = state;
     }
 }
 

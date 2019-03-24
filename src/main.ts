@@ -1,6 +1,7 @@
 const canvas = (p: p5) => {
 
     let maze: Maze;
+    let solver: Solver;
 
     p.preload = function() {
 
@@ -10,6 +11,7 @@ const canvas = (p: p5) => {
         p.createCanvas(p.windowWidth, p.windowHeight);
         maze = new Maze(p, 20, 20, 1);
         maze.setScale(3);
+        solver = new Solver(maze, 'a*');
     }
 
     p.windowResized = function() {
@@ -19,6 +21,7 @@ const canvas = (p: p5) => {
     p.draw = function() {
         p.background(100);
         maze.render();
+        solver.solve();
     }
 }
 
