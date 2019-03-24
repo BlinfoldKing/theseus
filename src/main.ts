@@ -8,7 +8,8 @@ const canvas = (p: p5) => {
 
     p.setup = function () {
         p.createCanvas(p.windowWidth, p.windowHeight);
-        maze = new Maze(p, 10, 10, 0.9);
+        maze = new Maze(p, 20, 20, 1);
+        maze.setScale(3);
     }
 
     p.windowResized = function() {
@@ -17,7 +18,6 @@ const canvas = (p: p5) => {
 
     p.draw = function() {
         p.background(100);
-        p.circle(30, 30, 20);
         maze.render();
     }
 }
